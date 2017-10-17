@@ -10,7 +10,7 @@
   <email>bklang@horde.org</email>
   <active>yes</active>
  </lead>
- <date>2017-10-13</date>
+ <date>2017-10-17</date>
  <version>
   <release>1.0.0alpha1</release>
   <api>1.0.0alpha1</api>
@@ -33,9 +33,9 @@
    </dir> <!-- /config -->
    <dir name="doc">
     <file name="CHANGES" role="doc" />
-    <file name="CREDITS" role="doc" />
+    <file name="CREDITS.rst" role="doc" />
     <file name="RELEASE_NOTES" role="doc" />
-    <file name="TODO" role="doc" />
+    <file name="TODO.rst" role="doc" />
    </dir> <!-- /doc -->
    <dir name="js">
     <file name="beatnik.js" role="horde" />
@@ -163,6 +163,7 @@
    <install as="beatnik/autogenerate.php" name="autogenerate.php" />
    <install as="beatnik/commit.php" name="commit.php" />
    <install as="beatnik/delete.php" name="delete.php" />
+   <install as="TODO.rst" name="doc/TODO.rst" />
    <install as="beatnik/editrec.php" name="editrec.php" />
    <install as="beatnik/index.php" name="index.php" />
    <install as="beatnik/listzones.php" name="listzones.php" />
@@ -172,9 +173,8 @@
    <install as="beatnik/config/conf.xml" name="config/conf.xml" />
    <install as="beatnik/config/prefs.php" name="config/prefs.php" />
    <install as="CHANGES" name="doc/CHANGES" />
-   <install as="CREDITS" name="doc/CREDITS" />
+   <install as="CREDITS.rst" name="doc/CREDITS.rst" />
    <install as="RELEASE_NOTES" name="doc/RELEASE_NOTES" />
-   <install as="TODO" name="doc/TODO" />
    <install as="beatnik/js/beatnik.js" name="js/beatnik.js" />
    <install as="beatnik/lib/.htaccess" name="lib/.htaccess" />
    <install as="beatnik/lib/Application.php" name="lib/Application.php" />
@@ -227,7 +227,7 @@
     <release>alpha</release>
     <api>alpha</api>
    </stability>
-   <date>2017-10-13</date>
+   <date>2017-10-17</date>
    <license uri="http://www.horde.org/licenses/gpl">GPL</license>
    <notes>
 * Initial release.
