@@ -12,7 +12,7 @@
         }
     ],
     "version": "1.0.0alpha1",
-    "time": "2016-01-13",
+    "time": "2017-10-17",
     "repositories": [
         {
             "type": "pear",
@@ -20,7 +20,16 @@
         }
     ],
     "require": {
-        "php": "^5.3",
+        "php": "^5.3 || ^7",
         "pear-pear.horde.org/horde": "^5"
+    },
+    "replace": {
+        "pear-pear.horde.org/beatnik": "1.*",
+        "pear-horde/beatnik": "1.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Beatnik": "lib/"
+        }
     }
 }
