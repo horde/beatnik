@@ -1,6 +1,6 @@
----
-0.1
----
+----------------
+v1.0.0alpha1-git
+----------------
 
 [jan] Officially support PHP 7.
 [jan] Add Hungarian translation (Andras Galos <galosa@netinform.hu>).
