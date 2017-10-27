@@ -21,7 +21,13 @@
  </stability>
  <license uri="http://www.horde.org/licenses/gpl">GPL</license>
  <notes>
-* Initial release.
+* [jan] Officially support PHP 7.
+* [jan] Add Hungarian translation (Andras Galos &lt;galosa@netinform.hu&gt;).
+* [jan] Add Spanish translation (Manuel P. Ayala &lt;mayala@unex.es&gt;).
+* [mjr] Add initial database migration.
+* [jan] Add Finnish translation (Leena Heino &lt;liinu@uta.fi&gt;).
+* [jan] Add Latvian translation (Jānis Eisaks &lt;jancs@dv.lv&gt;).
+* [jan] Provide default configuration files instead of .dist versions.
  </notes>
  <contents>
   <dir baseinstalldir="/" name="/">
@@ -230,7 +236,13 @@
    <date>2017-10-17</date>
    <license uri="http://www.horde.org/licenses/gpl">GPL</license>
    <notes>
-* Initial release.
+* [jan] Officially support PHP 7.
+* [jan] Add Hungarian translation (Andras Galos &lt;galosa@netinform.hu&gt;).
+* [jan] Add Spanish translation (Manuel P. Ayala &lt;mayala@unex.es&gt;).
+* [mjr] Add initial database migration.
+* [jan] Add Finnish translation (Leena Heino &lt;liinu@uta.fi&gt;).
+* [jan] Add Latvian translation (Jānis Eisaks &lt;jancs@dv.lv&gt;).
+* [jan] Provide default configuration files instead of .dist versions.
    </notes>
   </release>
  </changelog>
