@@ -5,3 +5,24 @@ full: DNS record management application
 description: Manage your DNS zones and records within your Horde install.
 list:
 type: application
+authors:
+  -
+    name: Ben Klang
+    user: bklang
+    email: bklang@horde.org
+    active: true
+    role: lead
+version:
+  release: 1.0.0alpha1
+  api: 1.0.0alpha1
+state:
+  release: alpha
+  api: alpha
+license:
+  identifier: GPL
+  uri: http://www.horde.org/licenses/gpl
+dependencies:
+  required:
+    php: ^5.3 || ^7
+    pear:
+      pear.horde.org/horde: ^5
