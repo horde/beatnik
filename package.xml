@@ -2,7 +2,7 @@
 <package packagerversion="1.9.2" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
  <name>beatnik</name>
  <channel>pear.horde.org</channel>
- <summary>DNS record management for Horde</summary>
+ <summary>DNS record management application</summary>
  <description>Manage your DNS zones and records within your Horde install.</description>
  <lead>
   <name>Ben Klang</name>
@@ -10,7 +10,7 @@
   <email>bklang@horde.org</email>
   <active>yes</active>
  </lead>
- <date>2016-01-13</date>
+ <date>2017-11-14</date>
  <version>
   <release>1.0.0alpha1</release>
   <api>1.0.0alpha1</api>
@@ -233,7 +233,7 @@
     <release>alpha</release>
     <api>alpha</api>
    </stability>
-   <date>2016-01-13</date>
+   <date>2017-11-14</date>
    <license uri="http://www.horde.org/licenses/gpl">GPL</license>
    <notes>
 * [jan] Officially support PHP 7.
