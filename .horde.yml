@@ -3,7 +3,7 @@ id: beatnik
 name: Beatnik
 full: DNS record management application
 description: Manage your DNS zones and records within your Horde install.
-list:
+list: ~
 type: application
 authors:
   -
@@ -23,6 +23,6 @@ license:
   uri: http://www.horde.org/licenses/gpl
 dependencies:
   required:
-    php: ^5.3 || ^7
-    pear:
-      pear.horde.org/horde: ^5
+    php: ^7
+    composer:
+      horde/horde: ^6

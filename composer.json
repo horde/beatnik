@@ -1,7 +1,7 @@
 {
     "name": "horde/beatnik",
     "description": "DNS record management application",
-    "type": "project",
+    "type": "horde-application",
     "homepage": "https://www.horde.org",
     "license": "GPL",
     "authors": [
@@ -11,22 +11,19 @@
             "role": "lead"
         }
     ],
-    "version": "1.0.0alpha1",
-    "time": "2017-11-11",
+    "time": "2021-03-20",
     "repositories": [
         {
-            "type": "pear",
-            "url": "https://pear.horde.org"
+            "type": "composer",
+            "url": "https://horde-satis.maintaina.com/"
         }
     ],
     "require": {
-        "php": "^5.3 || ^7",
-        "pear-pear.horde.org/horde": "^5"
+        "horde/horde-installer-plugin": "*",
+        "php": "^7",
+        "horde/horde": "^6"
     },
-    "replace": {
-        "pear-pear.horde.org/beatnik": "1.*",
-        "pear-horde/beatnik": "1.*"
-    },
+    "suggest": {},
     "autoload": {
         "psr-0": {
             "Beatnik": "lib/"
