@@ -12,7 +12,7 @@ class Autogenerate extends Horde_Form
 {
     /**
      */
-    function Autogenerate(&$vars)
+    function Autogenerate($vars)
     {
         require BEATNIK_BASE . '/config/autogenerate.php';
 

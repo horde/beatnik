@@ -12,7 +12,7 @@ class DeleteRecord extends Horde_Form
 {
     /**
      */
-    function DeleteRecord(&$vars)
+    function DeleteRecord($vars)
     {
         parent::__construct($vars, _("Are you sure you want to delete this record?"));
 

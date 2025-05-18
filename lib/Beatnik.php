@@ -485,7 +485,7 @@ class Beatnik
      *
      * @return mixed  true on success, PEAR::Error on failure
      */
-    public static function autogenerate(&$vars)
+    public static function autogenerate($vars)
     {
         $beatnik = $GLOBALS['registry']->getApiInstance('beatnik', 'application');
 

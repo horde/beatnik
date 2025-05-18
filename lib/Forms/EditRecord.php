@@ -12,7 +12,7 @@ class EditRecord extends Horde_Form
 {
     /**
      */
-    function EditRecord(&$vars)
+    function EditRecord($vars)
     {
         $isnew = !$vars->exists('id');
         $rectype = $vars->get('rectype');
