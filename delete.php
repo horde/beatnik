@@ -19,7 +19,7 @@ list($type, $record) = $beatnik->driver->getRecord(Horde_Util::getFormData('id')
 $form = new DeleteRecord($vars);
 
 if ($form->validate($vars)) {
-    $info = $form->getInfo($vars, $info);
+    $info = $form->getInfo($vars);
     if (Horde_Util::getFormData('submitbutton') == _("Delete")) {
         try {
             $result = $beatnik->driver->deleteRecord($info);
