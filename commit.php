@@ -38,7 +38,7 @@ foreach ($domains as $domain) {
     $form->useToken(false);
     $form->setSubmitted(true);
     if ($form->validate($vars)) {
-        $form->getInfo($vars, $info);
+        $info = $form->getInfo($vars, $info);
 
         try {
             $result = $beatnik->driver->saveRecord($info);

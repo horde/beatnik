@@ -20,7 +20,7 @@ list($type, $record) = $beatnik->driver->getRecord(Horde_Util::getFormData('id')
 $form = new EditRecord($vars);
 
 if ($form->validate($vars)) {
-    $form->getInfo($vars, $info);
+    $info = $form->getInfo($vars, $info);
 
     try {
         $result = $beatnik->driver->saveRecord($info);
