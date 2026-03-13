@@ -19,14 +19,18 @@
         }
     ],
     "require": {
-        "horde/horde-installer-plugin": "*",
-        "php": "^7",
-        "horde/horde": "^6"
+        "php": "^8",
+        "horde/base": "^6",
+        "horde/horde": "^6",
+        "horde/horde-installer-plugin": "*"
     },
     "suggest": {},
     "autoload": {
-        "psr-0": {
-            "Beatnik": "lib/"
+        "classmap": [
+            "lib/"
+        ],
+        "psr-4": {
+            "Horde\\Beatnik\\": "src/"
         }
     }
 }

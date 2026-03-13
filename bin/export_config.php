@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 /**
  * Helper for creating mass config files
@@ -16,6 +17,9 @@
  * @package Beatnik
  */
 
+use Horde\Argv\Parser;
+use Horde\Argv\Option;
+
 define('AUTH_HANDLER', true);
 define('HORDE_BASE', __DIR__ . '/../../');
 define('BEATNIK_BASE', HORDE_BASE . '/beatnik');
@@ -31,53 +35,40 @@ if (!Horde_CLI::runningFromCLI()) {
 // Load the CLI environment.
 $cli = Horde_Cli::init();
 
-// We accept the user name on the command-line.
-require_once 'Console/Getopt.php';
-try {
-    Console_Getopt::getopt(Console_Getopt::readPHPArgv(), 'h:u:p:t:r',
-                              array('help', 'username=', 'password=', 'type=', 'rpc='));
-} catch (Exception $e) {
-    $error = _("Couldn't read command-line options.");
-    Horde::log($error, 'DEBUG');
-    $cli->fatal($error);
-}
+// Parse command-line options using Horde\Argv\Parser
+$parser = new Parser([
+    'usage' => '%prog [OPTIONS]',
+    'description' => 'Export DNS configuration in various formats',
+    'optionList' => [
+        new Option('-u', '--username', [
+            'type' => 'string',
+            'dest' => 'username',
+            'help' => 'Horde login username'
+        ]),
+        new Option('-p', '--password', [
+            'type' => 'string',
+            'dest' => 'password',
+            'help' => 'Horde login password'
+        ]),
+        new Option('-t', '--type', [
+            'type' => 'string',
+            'dest' => 'type',
+            'help' => 'Export format'
+        ]),
+        new Option('-r', '--rpc', [
+            'type' => 'string',
+            'dest' => 'rpc',
+            'help' => 'Remote RPC URL (e.g., http://example.com/horde/rpc.php)'
+        ])
+    ]
+]);
 
-// Show help and exit if no arguments were set.
-list($opts, $args) = $ret;
-if (!$opts) {
-    showHelp();
-    exit;
-}
+list($opts, $args) = $parser->parseArgs();
 
-foreach ($opts as $opt) {
-    list($optName, $optValue) = $opt;
-    switch ($optName) {
-    case 'u':
-    case '--username':
-        $username = $optValue;
-        break;
-
-    case 'p':
-    case '--password':
-        $password = $optValue;
-        break;
-
-    case 't':
-    case '--type':
-        $type = $optValue;
-        break;
-
-    case 'r':
-    case '--rpc':
-        $rpc = $optValue;
-        break;
-
-    case 'h':
-    case '--help':
-        showHelp();
-        exit;
-    }
-}
+$username = $opts->username;
+$password = $opts->password;
+$type = $opts->type;
+$rpc = $opts->rpc;
 
 if (!empty($rpc)) {
     // We will fetch data from RPC
@@ -124,25 +115,6 @@ if (empty($type)) {
 }
 $function = '_' . $type;
 echo $function();
-
-/**
- * Show the command line arguments that the script accepts.
- */
-function showHelp()
-{
-    global $cli;
-
-    $cli->writeln(sprintf(_("Usage: %s [OPTIONS]..."), basename(__FILE__)));
-    $cli->writeln();
-    $cli->writeln(_("Mandatory arguments to long options are mandatory for short options too."));
-    $cli->writeln();
-    $cli->writeln(_("-h, --help                   Show this help"));
-    $cli->writeln(_("-u, --username[=username]    Horde login username"));
-    $cli->writeln(_("-p, --password[=password]    Horde login password"));
-    $cli->writeln(_("-t, --type[=type]    Export format"));
-    $cli->writeln(_("-r, --rpc[=http://example.com/horde/rpc.php]    Remote url"));
-    $cli->writeln();
-}
 
 /**
  * Get domain records
