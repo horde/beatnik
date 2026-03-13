@@ -23,6 +23,13 @@ license:
   uri: http://www.horde.org/licenses/gpl
 dependencies:
   required:
-    php: ^7
+    php: ^8
     composer:
       horde/horde: ^6
+      horde/base: ^6
+autoload:
+  classmap:
+    - lib/
+  psr-4:
+    Horde\Beatnik\: src/
+vendor: horde
