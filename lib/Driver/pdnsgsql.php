@@ -275,7 +275,8 @@ class Beatnik_Driver_pdnsgsql extends Beatnik_Driver
         $this->_connect();
 
         $change_date = time();
-        $domain_id = $_SESSION['beatnik']['curdomain']['id'];
+        $curdomain = $GLOBALS['session']->get('beatnik', 'curdomain');
+        $domain_id = $curdomain['id'];
 
         switch($info['rectype']) {
         case 'soa':
@@ -323,7 +324,7 @@ class Beatnik_Driver_pdnsgsql extends Beatnik_Driver
             break;
 
         case 'mx':
-            $name = $_SESSION['beatnik']['curdomain']['zonename'];
+            $name = $curdomain['zonename'];
             $type = 'MX';
             $content = $info['pointer'];
             $ttl = $info['ttl'];

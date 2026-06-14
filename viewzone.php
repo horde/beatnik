@@ -11,8 +11,11 @@
 require_once __DIR__ . '/lib/Application.php';
 $beatnik = Horde_Registry::appInit('beatnik');
 
+$session = $GLOBALS['session'];
+$curdomain = $session->get('beatnik', 'curdomain');
+
 try {
-    $zonedata = $beatnik->driver->getRecords($_SESSION['beatnik']['curdomain']['zonename']);
+    $zonedata = $beatnik->driver->getRecords($curdomain['zonename']);
 } catch (Exception $e) {
     $notification->push($e, 'horde.error');
     Horde::url('listzones.php')->redirect();
@@ -22,7 +25,7 @@ $page_output->addScriptFile('beatnik.js');
 $page_output->addScriptFile('stripe.js', 'horde');
 Beatnik::notifyCommits();
 $page_output->header(array(
-    'title' => $_SESSION['beatnik']['curdomain']['zonename']
+    'title' => $curdomain['zonename']
 ));
 require BEATNIK_TEMPLATES . '/menu.inc';
 
@@ -33,16 +36,17 @@ foreach ($zonedata as $type => $data) {
 }
 
 // Remove fields that should not be shown
+$expertmode = $session->get('beatnik', 'expertmode');
 foreach ($fields as $field_id => $field) {
     if ($field['type'] == 'hidden' ||
-        ($field['infoset'] != 'basic' && !$_SESSION['beatnik']['expertmode'])) {
+        ($field['infoset'] != 'basic' && !$expertmode)) {
         unset($field[$field_id]);
     }
 }
 
-$delete = Horde::url('delete.php')->add('curdomain', $_SESSION['beatnik']['curdomain']['zonename']);
-$edit = Horde::url('editrec.php')->add('curdomain', $_SESSION['beatnik']['curdomain']['zonename']);
-$autogen = Horde::url('autogenerate.php')->add('curdomain', $_SESSION['beatnik']['curdomain']['zonename']);
+$delete = Horde::url('delete.php')->add('curdomain', $curdomain['zonename']);
+$edit = Horde::url('editrec.php')->add('curdomain', $curdomain['zonename']);
+$autogen = Horde::url('autogenerate.php')->add('curdomain', $curdomain['zonename']);
 $rectypes = Beatnik::getRecTypes();
 
 require BEATNIK_TEMPLATES . '/view/header.inc';

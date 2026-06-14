@@ -13,10 +13,11 @@ $beatnik = Horde_Registry::appInit('beatnik');
 
 require_once BEATNIK_BASE . '/lib/Forms/EditRecord.php';
 
+$session = $GLOBALS['session'];
 $domains = array();
 if (Horde_Util::getGet('domain') == 'current') {
     $url = Horde::url('viewzone.php');
-    $domains[] = $_SESSION['beatnik']['curdomain'];
+    $domains[] = $session->get('beatnik', 'curdomain');
 } elseif (Horde_Util::getGet('domain') == 'all') {
     $url = Horde::url('listzones.php');
     foreach (Beatnik::needCommit() as $domain) {
@@ -25,7 +26,7 @@ if (Horde_Util::getGet('domain') == 'current') {
 }
 
 foreach ($domains as $domain) {
-    $_SESSION['beatnik']['curdomain'] = $domain;
+    $session->set('beatnik', 'curdomain', $domain);
     $vars = new Horde_Variables;
 
     $vars->set('rectype', 'soa');

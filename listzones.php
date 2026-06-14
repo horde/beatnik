@@ -10,9 +10,10 @@
 
 require_once __DIR__ . '/lib/Application.php';
 $beatnik = Horde_Registry::appInit('beatnik');
+$session = $GLOBALS['session'];
 
 // Unset the current domain since we are generating a zone list
-$_SESSION['beatnik']['curdomain'] = null;
+$session->set('beatnik', 'curdomain', null);
 
 // Set up categories
 $cManager = new Horde_Prefs_CategoryManager();
@@ -22,8 +23,8 @@ $fgcolors = $cManager->fgColors();
 
 // Page results
 // Check for and store the current page in the session
-$page = Horde_Util::getGet('page', $_SESSION['beatnik']['curpage']);
-$_SESSION['beatnik']['curpage'] = $page;
+$page = Horde_Util::getGet('page', $session->get('beatnik', 'curpage'));
+$session->set('beatnik', 'curpage', $page);
 
 // Create the Pager UI
 $pager_vars = Horde_Variables::getDefaultVariables();
@@ -40,9 +41,10 @@ $domains = array_slice($beatnik->domains, $page*$perpage, $perpage);
 
 // Hide fields that the user does not want to see
 $fields = Beatnik::getRecFields('soa');
+$expertmode = $session->get('beatnik', 'expertmode');
 foreach ($fields as $field_id => $field) {
     if ($field['type'] == 'hidden' ||
-        ($field['infoset'] != 'basic' && !$_SESSION['beatnik']['expertmode'])) {
+        ($field['infoset'] != 'basic' && !$expertmode)) {
         unset($fields[$field_id]);
     }
 }

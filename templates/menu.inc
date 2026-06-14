@@ -24,9 +24,10 @@ $menu_view = $prefs->getValue('menu_view');
             <select id="domainSelector" name="curdomain"
                 onchange="domainSubmit()">
                 <?php
+                    $curdomain = $GLOBALS['session']->get('beatnik', 'curdomain');
                     foreach ($beatnik->domains as $domain) {
                         echo '<option value="' . $domain['zonename'] . '"';
-                        if ($domain['zonename'] == $_SESSION['beatnik']['curdomain']['zonename']) {
+                        if ($domain['zonename'] == $curdomain['zonename']) {
                             echo " selected";
                         }
                         echo '>' . $domain['zonename'] . "</option>\n";
