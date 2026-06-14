@@ -1,5 +1,8 @@
 <?php
-if (Beatnik::needCommit($_SESSION['beatnik']['curdomain']['zonename'])) {
+$beatnikSession = $GLOBALS['session'];
+$beatnikCurdomain = $beatnikSession->get('beatnik', 'curdomain');
+$beatnikExpertmode = $beatnikSession->get('beatnik', 'expertmode');
+if (Beatnik::needCommit($beatnikCurdomain['zonename'])) {
     $commit = Horde::url('commit.php')->add(array('domain' => 'current'));
     echo Horde::link($commit, _("Commit Changes"), 'button') . _("Commit Changes") . '</a><br /><br />';
 }
@@ -7,9 +10,9 @@ if (Beatnik::needCommit($_SESSION['beatnik']['curdomain']['zonename'])) {
 
 <div class="header">
 <?php
-$params = array('id' => $_SESSION['beatnik']['curdomain']['id'],
+$params = array('id' => $beatnikCurdomain['id'],
                 'rectype' => 'soa');
-echo $_SESSION['beatnik']['curdomain']['zonename'] . '&nbsp;'
+echo $beatnikCurdomain['zonename'] . '&nbsp;'
      . Horde::link($edit->copy()->add($params))
      . Horde::img('edit.png', _("Edit")) . '</a> '
      . Horde::link($autogen->copy()->add($params))
@@ -20,11 +23,11 @@ echo $_SESSION['beatnik']['curdomain']['zonename'] . '&nbsp;'
 </div>
 
 <?php
-if ($_SESSION['beatnik']['expertmode']) {
+if ($beatnikExpertmode) {
     echo '<table class="striped">' . "\n";
     foreach (Beatnik::getRecFields('soa') as $key => $value) {
-        if (isset($_SESSION['beatnik']['curdomain'][$key])) {
-            echo '<tr><td>' . $value['name'] . '</td><td>' . $_SESSION['beatnik']['curdomain'][$key] . '</td></tr>' . "\n";
+        if (isset($beatnikCurdomain[$key])) {
+            echo '<tr><td>' . $value['name'] . '</td><td>' . $beatnikCurdomain[$key] . '</td></tr>' . "\n";
         }
     }
     echo '</table><br />' . "\n";
@@ -37,7 +40,7 @@ if ($_SESSION['beatnik']['expertmode']) {
     <th><?php echo _("Type") ?></th>
     <?php
     foreach ($fields as $field => $fdata) {
-        if ((($fdata['infoset'] == 'basic') || $_SESSION['beatnik']['expertmode']) && $fdata['type'] != 'hidden') {
+        if ((($fdata['infoset'] == 'basic') || $beatnikExpertmode) && $fdata['type'] != 'hidden') {
             echo '<th>' . $fdata['name'] . '</th>' . "\n";
         }
     }

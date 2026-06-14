@@ -121,7 +121,8 @@ class Beatnik_Driver {
             return false;
         }
 
-        $zonedata = $this->getRecords($_SESSION['beatnik']['curdomain']['zonename']);
+        $curdomain = $GLOBALS['session']->get('beatnik', 'curdomain');
+        $zonedata = $this->getRecords($curdomain['zonename']);
         // Search for the requested record id
         foreach ($zonedata as $type => $records) {
             foreach ($records as $record) {
@@ -140,7 +141,7 @@ class Beatnik_Driver {
 
         if (!$record) {
             // We may be editing the SOA.  See if it matches
-            $record = $this->getDomain($_SESSION['beatnik']['curdomain']['zonename']);
+            $record = $this->getDomain($curdomain['zonename']);
             if ($record['id'] == $id) {
                 $type = 'soa';
             } else {
@@ -164,8 +165,9 @@ class Beatnik_Driver {
      */
     function recordExists($record, $rectype)
     {
+        $curdomain = $GLOBALS['session']->get('beatnik', 'curdomain');
         try {
-            $zonedata = $this->getRecords($_SESSION['beatnik']['curdomain']['zonename']);
+            $zonedata = $this->getRecords($curdomain['zonename']);
         } catch (Exception $e) {
             $notification->push($e, 'horde.error');
             Horde::url('listzones.php')->redirect;
@@ -200,18 +202,21 @@ class Beatnik_Driver {
      */
     function saveRecord(&$info)
     {
+        $session = $GLOBALS['session'];
+        $curdomain = $session->get('beatnik', 'curdomain');
+
         // Check to see if this is a new domain
-        if ($info['rectype'] == 'soa' && $info['zonename'] != $_SESSION['beatnik']['curdomain']['zonename']) {
+        if ($info['rectype'] == 'soa' && $info['zonename'] != $curdomain['zonename']) {
             // Make sure the user has permissions to add domains
             if (!Beatnik::hasPermission('beatnik:domains', Horde_Perms::EDIT)) {
                 throw new Beatnik_Exception(_('You do not have permission to create new domains.'));
             }
 
             // Create a dummy old domain for comparison purposes
-            $oldsoa['serial'] = 0;
+            $oldsoa = array('serial' => 0);
 
         } else {
-            $oldsoa =& $_SESSION['beatnik']['curdomain'];
+            $oldsoa = $curdomain;
 
             // Check for permissions to edit the record in question
             if ($info['rectype'] == 'soa') {
@@ -220,7 +225,7 @@ class Beatnik_Driver {
                     throw new Beatnik_Exception(_('You do not have permssion to edit the SOA of this zone.'));
                 }
             } else {
-                $node = 'beatnik:domains:' . $_SESSION['beatnik']['curdomain']['zonename'];
+                $node = 'beatnik:domains:' . $curdomain['zonename'];
                 if (!Beatnik::hasPermission($node, Horde_Perms::EDIT, 2)) {
                     throw new Beatnik_Exception(_('You do not have permssion to edit this record.'));
                 }
@@ -231,7 +236,7 @@ class Beatnik_Driver {
         // FIXME: Modify saveRecord() to return the new (possibly changed) ID of the
         // record and then use that ID to update permissions
         $return = $this->_saveRecord($info);
-        $oldsoa =& $_SESSION['beatnik']['curdomain'];
+        $oldsoa = $session->get('beatnik', 'curdomain');
         if ($info['rectype'] == 'soa' &&
            ($oldsoa['serial'] < $info['serial'])) {
             // Clear the commit flag (if set)
@@ -243,7 +248,7 @@ class Beatnik_Driver {
         // Check to see if an SOA was just added or updated.
         // If so, make it the current domain.
         if ($info['rectype'] == 'soa') {
-            $_SESSION['beatnik']['curdomain'] = $this->getDomain($info['zonename']);
+            $session->set('beatnik', 'curdomain', $this->getDomain($info['zonename']));
         }
 
         return true;
@@ -261,7 +266,7 @@ class Beatnik_Driver {
     function deleteRecord(&$info)
     {
         $return = $this->_deleteRecord($info);
-        $oldsoa =& $_SESSION['beatnik']['curdomain'];
+        $oldsoa = $GLOBALS['session']->get('beatnik', 'curdomain');
 
         // No need to commit if the whole zone is gone
         if ($info['rectype'] != 'soa') {

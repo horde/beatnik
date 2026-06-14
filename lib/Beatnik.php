@@ -392,26 +392,32 @@ class Beatnik
      */
     public static function needCommit($domain = null, $needcommit = null)
     {
+        $session = $GLOBALS['session'];
+
         // Make sure we have a valid array with which to work
-        if (!isset($_SESSION['beatnik']['needcommit'])) {
-            $_SESSION['beatnik']['needcommit'] = array();
+        $registry = $session->get('beatnik', 'needcommit');
+        if (!is_array($registry)) {
+            $registry = array();
+            $session->set('beatnik', 'needcommit', $registry);
         }
 
         if ($domain === null && $needcommit === null) {
             // Return the stored list of domains needing changes committed.
-            return array_keys($_SESSION['beatnik']['needcommit']);
+            return array_keys($registry);
         } elseif ($domain !== null && $needcommit === null) {
             // Check if domain need committing
-            return isset($_SESSION['beatnik']['needcommit'][$domain]);
+            return isset($registry[$domain]);
         } elseif ($domain !== null && is_bool($needcommit)) {
             // Flag domain for committing
             if ($needcommit) {
-                if(!isset($_SESSION['beatnik']['needcommit'][$domain])) {
-                    $_SESSION['beatnik']['needcommit'][$domain] = true;
+                if (!isset($registry[$domain])) {
+                    $registry[$domain] = true;
+                    $session->set('beatnik', 'needcommit', $registry);
                 }
             } else {
-                if (isset($_SESSION['beatnik']['needcommit'][$domain])) {
-                    unset($_SESSION['beatnik']['needcommit'][$domain]);
+                if (isset($registry[$domain])) {
+                    unset($registry[$domain]);
+                    $session->set('beatnik', 'needcommit', $registry);
                 }
             }
             return true;
@@ -491,8 +497,9 @@ class Beatnik
 
         require BEATNIK_BASE . '/config/autogenerate.php';
         $template = $templates[$vars->get('template')];
+        $curdomain = $GLOBALS['session']->get('beatnik', 'curdomain');
         try {
-            $zonedata = $beatnik->driver->getRecords($_SESSION['beatnik']['curdomain']['zonename']);
+            $zonedata = $beatnik->driver->getRecords($curdomain['zonename']);
         } catch (Exception $e) {
             $GLOBALS['notification']->push($e);
         }
@@ -534,7 +541,7 @@ class Beatnik
             }
 
             $defaults = array('rectype' => $rectype,
-                              'zonename'=> $_SESSION['beatnik']['curdomain']['zonename']);
+                              'zonename'=> $curdomain['zonename']);
             foreach ($definitions['records'] as $info) {
                 if ($beatnik->driver->recordExists($info, $rectype)) {
                     $GLOBALS['notification']->push(_("Skipping existing identical record"));

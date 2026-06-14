@@ -46,6 +46,8 @@ class Beatnik_Application extends Horde_Registry_Application
         // Get a list of domains to work with
         $this->domains = $this->driver->getDomains();
 
+        $session = $GLOBALS['session'];
+
         // Jump to new domain
         if (Horde_Util::getFormData('curdomain') !== null && !empty($this->domains)) {
             try {
@@ -55,25 +57,25 @@ class Beatnik_Application extends Horde_Registry_Application
                 $domain = $domains[0];
             }
 
-            $_SESSION['beatnik']['curdomain'] = $domain;
+            $session->set('beatnik', 'curdomain', $domain);
         }
 
         // Determine if the user should see basic or advanced options
-        if (!isset($_SESSION['beatnik']['expertmode'])) {
-            $_SESSION['beatnik']['expertmode'] = false;
+        if (!$session->exists('beatnik', 'expertmode')) {
+            $session->set('beatnik', 'expertmode', false);
         } elseif (Horde_Util::getFormData('expertmode') == 'toggle') {
-            if ($_SESSION['beatnik']['expertmode']) {
+            if ($session->get('beatnik', 'expertmode')) {
                 $GLOBALS['notification']->push(_("Expert Mode off"), 'horde.message');
-                $_SESSION['beatnik']['expertmode'] = false;
+                $session->set('beatnik', 'expertmode', false);
             } else {
                 $GLOBALS['notification']->push(_("Expert Mode ON"), 'horde.warning');
-                $_SESSION['beatnik']['expertmode'] = true;
+                $session->set('beatnik', 'expertmode', true);
             }
         }
 
         // Initialize the page marker
-        if (!isset($_SESSION['beatnik']['curpage'])) {
-            $_SESSION['beatnik']['curpage'] = 0;
+        if (!$session->exists('beatnik', 'curpage')) {
+            $session->set('beatnik', 'curpage', 0);
         }
     }
 
@@ -101,19 +103,22 @@ class Beatnik_Application extends Horde_Registry_Application
      */
     public function menu($menu)
     {
+        $session = $GLOBALS['session'];
+
         // We are editing rather than adding if an ID was passed
         $editing = Horde_Util::getFormData('id');
         $editing = !empty($editing);
 
         $menu->add(Horde::url('listzones.php'), _("List Domains"), 'website.png');
-        if (!empty($_SESSION['beatnik']['curdomain'])) {
-            $menu->add(Horde::url('editrec.php')->add('curdomain', $_SESSION['beatnik']['curdomain']['zonename']), ($editing) ? _("Edit Record") : _("Add Record"), 'edit.png');
+        $curdomain = $session->get('beatnik', 'curdomain');
+        if (!empty($curdomain)) {
+            $menu->add(Horde::url('editrec.php')->add('curdomain', $curdomain['zonename']), ($editing) ? _("Edit Record") : _("Add Record"), 'edit.png');
         } else {
             $menu->add(Horde::url('editrec.php?rectype=soa'), _("Add Zone"), 'edit.png');
         }
 
         $url = Horde::selfUrl(true)->add(array('expertmode' => 'toggle'));
-        $menu->add($url, _("Expert Mode"), 'hide_panel.png', null, '', null, ($_SESSION['beatnik']['expertmode']) ? 'current' : '');
+        $menu->add($url, _("Expert Mode"), 'hide_panel.png', null, '', null, $session->get('beatnik', 'expertmode') ? 'current' : '');
 
         if (count(Beatnik::needCommit())) {
             $url = Horde::url('commit.php')->add(array('domain' => 'all'));

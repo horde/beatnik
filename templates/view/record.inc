@@ -12,7 +12,7 @@ foreach ($zonedata[$type] as $record) {
 
     foreach ($fields as $field => $fdata) {
 
-        if ((($fdata['infoset'] != 'basic') && !$_SESSION['beatnik']['expertmode']) || $fdata['type'] == 'hidden') {
+        if ((($fdata['infoset'] != 'basic') && !$expertmode) || $fdata['type'] == 'hidden') {
             continue;
         }
 

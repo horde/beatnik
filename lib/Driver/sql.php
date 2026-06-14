@@ -168,7 +168,8 @@ class Beatnik_Driver_sql extends Beatnik_Driver
             unset($params['id'], $fields[0]);
             if ($info['rectype'] != 'soa') {
                 $fields[] = 'zonename';
-                $params['zonename'] =  $_SESSION['beatnik']['curdomain']['zonename'];
+                $curdomain = $GLOBALS['session']->get('beatnik', 'curdomain');
+                $params['zonename'] =  $curdomain['zonename'];
             }
             $query = 'INSERT INTO beatnik_' . $info['rectype'] . ' (' . implode(', ', $fields) . ') ' . 
                      ' VALUES (' . substr(str_repeat('?, ', sizeof($params)), 0, -2) . ')';

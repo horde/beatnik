@@ -29,7 +29,8 @@ class EditRecord extends Horde_Form
         parent::__construct($vars, $isnew ? _("Add DNS Record") : _("Edit DNS Record"));
 
         $types = Beatnik::getRecTypes();
-        if (empty($_SESSION['beatnik']['curdomain'])) {
+        $session = $GLOBALS['session'];
+        if (empty($session->get('beatnik', 'curdomain'))) {
             // Without an active domain, limit the form to creating a new zone.
             $types = array('soa' => _('SOA (Start of Authority)'));
         }
@@ -46,7 +47,7 @@ class EditRecord extends Horde_Form
 
         foreach ($recset as $field => $fdata) {
             if ($fdata['type'] == 'hidden' || ($fdata['infoset'] != 'basic' &&
-			    !$_SESSION['beatnik']['expertmode'])) {
+			    !$session->get('beatnik', 'expertmode'))) {
                 $this->addHidden(_($fdata['description']), $field, 'text',
 				                 $fdata['required']);
             } else {

@@ -301,8 +301,9 @@ class Beatnik_Driver_ldap2dns extends Beatnik_Driver
 
         // Attribute used to identify objects
         $dnattr = $this->_params['dn'];
+        $curdomain = $GLOBALS['session']->get('beatnik', 'curdomain');
 
-        $suffix = $dnattr . '=' . $_SESSION['beatnik']['curdomain']['zonename'] . ',' . $this->_params['basedn'];
+        $suffix = $dnattr . '=' . $curdomain['zonename'] . ',' . $this->_params['basedn'];
         if ($info['rectype'] == 'soa') {
             // FIXME: Add recursion
             throw new Beatnik_Exception(_("Unsupported recursive delete."));
@@ -310,7 +311,7 @@ class Beatnik_Driver_ldap2dns extends Beatnik_Driver
             $domain = $this->cleanDNString($info['zonename']);
             $dn = $suffix;
         } else {
-            $domain = $this->cleanDNString($_SESSION['beatnik']['curdomain']['zonename']);
+            $domain = $this->cleanDNString($curdomain['zonename']);
             // Strip the array fluff and add the attribute
             $dn = $dnattr . '=' . $this->cleanDNString($info['id']) . ',' . $suffix;
         }
@@ -419,7 +420,8 @@ class Beatnik_Driver_ldap2dns extends Beatnik_Driver
             $entry[$key] = $id;
             $dn = $key.'='.$id;
             // The domain is held in the session
-            $domain = $this->cleanDNString($_SESSION['beatnik']['curdomain']['zonename']);
+            $curdomain = $GLOBALS['session']->get('beatnik', 'curdomain');
+            $domain = $this->cleanDNString($curdomain['zonename']);
             // Prepare the DN suffix
             $suffix = $key.'='.$domain.','.$this->_params['basedn'];
         }

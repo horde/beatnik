@@ -25,8 +25,9 @@ class DeleteRecord extends Horde_Form
         $this->addVariable(_("Type"), 'rectype', 'text', false, true);
 
         $recset = Beatnik::getRecFields($rectype);
+        $expertmode = $GLOBALS['session']->get('beatnik', 'expertmode');
         foreach ($recset as $field => $fdata) {
-            if ($fdata['type'] != 'hidden' && ($fdata['infoset'] == 'basic' || $_SESSION['beatnik']['expertmode'])) {
+            if ($fdata['type'] != 'hidden' && ($fdata['infoset'] == 'basic' || $expertmode)) {
                 $this->addVariable(_($fdata['description']), $field, $fdata['type'], false, true);
             }
 
